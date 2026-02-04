@@ -2,21 +2,24 @@
 declare(strict_types=1);
 
 /**
- * Pimcore
+ * OpenDXP
  *
- * This source file is available under two different licenses:
- * - GNU General Public License version 3 (GPLv3)
- * - Pimcore Commercial License (PCL)
+ * This source file is licensed under the GNU General Public License version 3 (GPLv3).
+ *
  * Full copyright and license information is available in
  * LICENSE.md which is distributed with this source code.
  *
- *  @copyright  Copyright (c) Pimcore GmbH (http://www.pimcore.org)
- *  @license    http://www.pimcore.org/license     GPLv3 and PCL
+ * @copyright  Copyright (c) Pimcore GmbH (https://pimcore.com)
+ * @copyright  Modification Copyright (c) OpenDXP (https://www.opendxp.io)
+ * @license    https://www.gnu.org/licenses/gpl-3.0.html  GNU General Public License version 3 (GPLv3)
  */
 
 namespace OpenDxp\Bundle\EcommerceFrameworkBundle\PaymentManager\Payment;
 
 use Carbon\Carbon;
+use Exception;
+use InvalidArgumentException;
+use OpenDxp;
 use OpenDxp\Bundle\EcommerceFrameworkBundle\Exception\UnzerPaymentProviderException;
 use OpenDxp\Bundle\EcommerceFrameworkBundle\Factory;
 use OpenDxp\Bundle\EcommerceFrameworkBundle\OrderManager\OrderAgentInterface;
@@ -29,6 +32,7 @@ use OpenDxp\Bundle\EcommerceFrameworkBundle\PriceSystem\PriceInterface;
 use OpenDxp\Localization\LocaleService;
 use OpenDxp\Model\DataObject\Objectbrick\Data\PaymentProviderUnzer;
 use OpenDxp\Model\DataObject\OnlineShopOrder;
+use Throwable;
 use UnzerSDK\Exceptions\UnzerApiException;
 use UnzerSDK\Resources\CustomerFactory;
 use UnzerSDK\Resources\EmbeddedResources\Address;
@@ -47,13 +51,13 @@ class Unzer extends AbstractPayment
     public function __construct(array $options)
     {
         if (empty($options['privateAccessKey'])) {
-            throw new \InvalidArgumentException('no private access key given');
+            throw new InvalidArgumentException('no private access key given');
         }
 
         $this->privateAccessKey = $options['privateAccessKey'];
 
         if (empty($options['publicAccessKey'])) {
-            throw new \InvalidArgumentException('no private access key given');
+            throw new InvalidArgumentException('no private access key given');
         }
 
         $this->publicAccessKey = $options['publicAccessKey'];
@@ -72,24 +76,24 @@ class Unzer extends AbstractPayment
     public function startPayment(OrderAgentInterface $orderAgent, PriceInterface $price, AbstractRequest $config): StartPaymentResponseInterface
     {
         if (empty($config['paymentReference'])) {
-            throw new \InvalidArgumentException('no paymentReference sent');
+            throw new InvalidArgumentException('no paymentReference sent');
         }
 
         if (empty($config['internalPaymentId'])) {
-            throw new \InvalidArgumentException('no internalPaymentId sent');
+            throw new InvalidArgumentException('no internalPaymentId sent');
         }
 
         if (empty($config['returnUrl'])) {
-            throw new \InvalidArgumentException('no return sent');
+            throw new InvalidArgumentException('no return sent');
         }
 
         if (empty($config['errorUrl'])) {
-            throw new \InvalidArgumentException('no errorUrl sent');
+            throw new InvalidArgumentException('no errorUrl sent');
         }
 
         $order = $orderAgent->getOrder();
 
-        $unzer = new \UnzerSDK\Unzer($this->privateAccessKey, \OpenDxp::getKernel()?->getContainer()->get(LocaleService::class)?->getLocale());
+        $unzer = new \UnzerSDK\Unzer($this->privateAccessKey, OpenDxp::getKernel()?->getContainer()->get(LocaleService::class)?->getLocale());
 
         $billingAddress = (new Address())
                           ->setName($order->getCustomerLastname() . ' ' . $order->getCustomerLastname())
@@ -166,7 +170,7 @@ class Unzer extends AbstractPayment
             }
         } catch (UnzerApiException $exception) {
             $url = $this->generateErrorUrl($config['errorUrl'], $exception->getMerchantMessage(), $exception->getClientMessage());
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $url = $this->generateErrorUrl($config['errorUrl'], $exception->getMessage());
         }
 
@@ -189,7 +193,7 @@ class Unzer extends AbstractPayment
     {
         $order = $response['order'];
         if (!$order instanceof OnlineShopOrder) {
-            throw new \InvalidArgumentException('no order sent');
+            throw new InvalidArgumentException('no order sent');
         }
 
         $clientMessage = '';
@@ -262,7 +266,7 @@ class Unzer extends AbstractPayment
         } catch (UnzerApiException $e) {
             $clientMessage = $e->getClientMessage();
             $merchantMessage = $e->getMerchantMessage();
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $merchantMessage = $e->getMessage();
         }
 
@@ -295,17 +299,11 @@ class Unzer extends AbstractPayment
         );
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getAuthorizedData(): array
     {
         return $this->authorizedData;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function setAuthorizedData(array $authorizedData): void
     {
         $this->authorizedData = $authorizedData;
@@ -328,11 +326,6 @@ class Unzer extends AbstractPayment
     }
 
     /**
-     * @param OnlineShopOrder $order
-     * @param PriceInterface $price
-     *
-     * @return bool
-     *
      * @throws UnzerApiException
      */
     public function cancelCharge(OnlineShopOrder $order, PriceInterface $price): bool
@@ -354,10 +347,6 @@ class Unzer extends AbstractPayment
     }
 
     /**
-     * @param OnlineShopOrder $order
-     *
-     * @return float|int
-     *
      * @throws UnzerApiException
      */
     public function getMaxCancelAmount(OnlineShopOrder $order): float | int
@@ -381,10 +370,6 @@ class Unzer extends AbstractPayment
     }
 
     /**
-     * @param OnlineShopOrder $order
-     *
-     * @return ?Payment
-     *
      * @throws UnzerApiException
      */
     public function fetchPayment(OnlineShopOrder $order): ?Payment
