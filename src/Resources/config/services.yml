@@ -1,0 +1,14 @@
+services:
+    _defaults:
+        public: false
+        autowire: true
+        autoconfigure: true
+
+    OpenDxp\Bundle\EcommerceFrameworkBundle\PaymentManager\Payment\Unzer:
+        arguments:
+            $options: []
+        tags:
+            - { name: opendxp_ecommerce.payment.provider, key: 'unzer' }
+
+    OpenDxp\Bundle\EcommerceFrameworkBundle\Unzer\Installer:
+        public: true
