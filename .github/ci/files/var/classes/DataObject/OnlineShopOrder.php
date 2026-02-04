@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 /**
  * Inheritance: no
@@ -50,7 +49,6 @@ namespace OpenDxp\Model\DataObject;
 
 use OpenDxp\Model\DataObject\Exception\InheritanceParentNotFoundException;
 use OpenDxp\Model\DataObject\PreGetValueHookInterface;
-use OpenDxp\Model\Element\AbstractElement;
 
 /**
 * @method static \OpenDxp\Model\DataObject\OnlineShopOrder\Listing getList(array $config = [])
@@ -91,48 +89,91 @@ use OpenDxp\Model\Element\AbstractElement;
 
 class OnlineShopOrder extends \OpenDxp\Bundle\EcommerceFrameworkBundle\Model\AbstractOrder
 {
+public const FIELD_ORDERNUMBER = 'ordernumber';
+public const FIELD_ORDER_STATE = 'orderState';
+public const FIELD_ORDERDATE = 'orderdate';
+public const FIELD_ITEMS = 'items';
+public const FIELD_COMMENT = 'comment';
+public const FIELD_CUSTOMER_ORDER_DATA = 'customerOrderData';
+public const FIELD_VOUCHER_TOKENS = 'voucherTokens';
+public const FIELD_GIFT_ITEMS = 'giftItems';
+public const FIELD_PRICE_MODIFICATIONS = 'priceModifications';
+public const FIELD_SUB_TOTAL_NET_PRICE = 'subTotalNetPrice';
+public const FIELD_SUB_TOTAL_PRICE = 'subTotalPrice';
+public const FIELD_TOTAL_NET_PRICE = 'totalNetPrice';
+public const FIELD_TOTAL_PRICE = 'totalPrice';
+public const FIELD_TAX_INFO = 'taxInfo';
+public const FIELD_CURRENCY = 'currency';
+public const FIELD_CART_ID = 'cartId';
+public const FIELD_SUCCESSOR_ORDER = 'successorOrder';
+public const FIELD_CART_HASH = 'cartHash';
+public const FIELD_CUSTOMER = 'customer';
+public const FIELD_CUSTOMER_FIRSTNAME = 'customerFirstname';
+public const FIELD_CUSTOMER_LASTNAME = 'customerLastname';
+public const FIELD_CUSTOMER_COMPANY = 'customerCompany';
+public const FIELD_CUSTOMER_STREET = 'customerStreet';
+public const FIELD_CUSTOMER_ZIP = 'customerZip';
+public const FIELD_CUSTOMER_CITY = 'customerCity';
+public const FIELD_CUSTOMER_COUNTRY = 'customerCountry';
+public const FIELD_CUSTOMER_EMAIL = 'customerEmail';
+public const FIELD_DELIVERY_FIRSTNAME = 'deliveryFirstname';
+public const FIELD_DELIVERY_LASTNAME = 'deliveryLastname';
+public const FIELD_DELIVERY_COMPANY = 'deliveryCompany';
+public const FIELD_DELIVERY_STREET = 'deliveryStreet';
+public const FIELD_DELIVERY_ZIP = 'deliveryZip';
+public const FIELD_DELIVERY_CITY = 'deliveryCity';
+public const FIELD_DELIVERY_COUNTRY = 'deliveryCountry';
+public const FIELD_PAYMENT_PROVIDER = 'paymentProvider';
+public const FIELD_PAYMENT_INFO = 'paymentInfo';
+public const FIELD_PAYMENT_REFERENCE = 'paymentReference';
+public const FIELD_CUSTOMIZED = 'customized';
+
 protected $classId = "EF_OSO";
 protected $className = "OnlineShopOrder";
-protected ?string $ordernumber;
-protected ?string $orderState;
-protected ?\Carbon\Carbon $orderdate;
-protected array $items;
-protected ?string $comment;
-protected ?string $customerOrderData;
-protected array $voucherTokens;
-protected array $giftItems;
-protected ?Fieldcollection $priceModifications;
-protected ?string $subTotalNetPrice;
-protected ?string $subTotalPrice;
-protected ?string $totalNetPrice;
-protected ?string $totalPrice;
-protected array $taxInfo;
-protected ?string $currency;
-protected ?string $cartId;
-protected \OpenDxp\Model\Element\AbstractElement|null|OnlineShopOrder $successorOrder;
-protected ?int $cartHash;
-protected \OpenDxp\Model\Element\AbstractElement|Customer|null $customer;
-protected ?string $customerFirstname;
-protected ?string $customerLastname;
-protected ?string $customerCompany;
-protected ?string $customerStreet;
-protected ?string $customerZip;
-protected ?string $customerCity;
-protected ?string $customerCountry;
-protected ?string $customerEmail;
-protected ?string $deliveryFirstname;
-protected ?string $deliveryLastname;
-protected ?string $deliveryCompany;
-protected ?string $deliveryStreet;
-protected ?string $deliveryZip;
-protected ?string $deliveryCity;
-protected ?string $deliveryCountry;
-protected Objectbrick|null|OnlineShopOrder\PaymentProvider $paymentProvider;
-protected ?Fieldcollection $paymentInfo;
-protected ?string $paymentReference;
-protected Objectbrick|OnlineShopOrder\Customized|null $customized;
+protected $ordernumber;
+protected $orderState;
+protected $orderdate;
+protected $items;
+protected $comment;
+protected $customerOrderData;
+protected $voucherTokens;
+protected $giftItems;
+protected $priceModifications;
+protected $subTotalNetPrice;
+protected $subTotalPrice;
+protected $totalNetPrice;
+protected $totalPrice;
+protected $taxInfo;
+protected $currency;
+protected $cartId;
+protected $successorOrder;
+protected $cartHash;
+protected $customer;
+protected $customerFirstname;
+protected $customerLastname;
+protected $customerCompany;
+protected $customerStreet;
+protected $customerZip;
+protected $customerCity;
+protected $customerCountry;
+protected $customerEmail;
+protected $deliveryFirstname;
+protected $deliveryLastname;
+protected $deliveryCompany;
+protected $deliveryStreet;
+protected $deliveryZip;
+protected $deliveryCity;
+protected $deliveryCountry;
+protected $paymentProvider;
+protected $paymentInfo;
+protected $paymentReference;
+protected $customized;
 
 
+/**
+* @param array $values
+* @return static
+*/
 public static function create(array $values = []): static
 {
 	$object = new static();
@@ -169,6 +210,8 @@ public function getOrdernumber(): ?string
 */
 public function setOrdernumber(?string $ordernumber): static
 {
+	$this->markFieldDirty("ordernumber", true);
+
 	$this->ordernumber = $ordernumber;
 
 	return $this;
@@ -203,6 +246,8 @@ public function getOrderState(): ?string
 */
 public function setOrderState(?string $orderState): static
 {
+	$this->markFieldDirty("orderState", true);
+
 	$this->orderState = $orderState;
 
 	return $this;
@@ -237,6 +282,8 @@ public function getOrderdate(): ?\Carbon\Carbon
 */
 public function setOrderdate(?\Carbon\Carbon $orderdate): static
 {
+	$this->markFieldDirty("orderdate", true);
+
 	$this->orderdate = $orderdate;
 
 	return $this;
@@ -314,6 +361,8 @@ public function getComment(): ?string
 */
 public function setComment(?string $comment): static
 {
+	$this->markFieldDirty("comment", true);
+
 	$this->comment = $comment;
 
 	return $this;
@@ -348,6 +397,8 @@ public function getCustomerOrderData(): ?string
 */
 public function setCustomerOrderData(?string $customerOrderData): static
 {
+	$this->markFieldDirty("customerOrderData", true);
+
 	$this->customerOrderData = $customerOrderData;
 
 	return $this;
@@ -439,7 +490,10 @@ public function setGiftItems(?array $giftItems): static
 	return $this;
 }
 
-    public function getPriceModifications(): ?Fieldcollection
+/**
+* @return \OpenDxp\Model\DataObject\Fieldcollection|null
+*/
+public function getPriceModifications(): ?\OpenDxp\Model\DataObject\Fieldcollection
 {
 	if ($this instanceof PreGetValueHookInterface && !\OpenDxp::inAdmin()) {
 		$preValue = $this->preGetValue("priceModifications");
@@ -634,6 +688,8 @@ public function getTaxInfo(): array
 */
 public function setTaxInfo(?array $taxInfo): static
 {
+	$this->markFieldDirty("taxInfo", true);
+
 	$this->taxInfo = $taxInfo;
 
 	return $this;
@@ -668,6 +724,8 @@ public function getCurrency(): ?string
 */
 public function setCurrency(?string $currency): static
 {
+	$this->markFieldDirty("currency", true);
+
 	$this->currency = $currency;
 
 	return $this;
@@ -702,6 +760,8 @@ public function getCartId(): ?string
 */
 public function setCartId(?string $cartId): static
 {
+	$this->markFieldDirty("cartId", true);
+
 	$this->cartId = $cartId;
 
 	return $this;
@@ -709,9 +769,9 @@ public function setCartId(?string $cartId): static
 
 /**
 * Get successorOrder - Successor Order
-* @return OnlineShopOrder|\OpenDxp\Model\Element\AbstractElement|\OpenDxp\Model\Element\ElementInterface|null
+* @return \OpenDxp\Model\DataObject\OnlineShopOrder|null
 */
-public function getSuccessorOrder(): OnlineShopOrder|\OpenDxp\Model\Element\ElementInterface|\OpenDxp\Model\Element\AbstractElement|null
+public function getSuccessorOrder(): ?\OpenDxp\Model\Element\AbstractElement
 {
 	if ($this instanceof PreGetValueHookInterface && !\OpenDxp::inAdmin()) {
 		$preValue = $this->preGetValue("successorOrder");
@@ -787,9 +847,9 @@ public function setCartHash(?int $cartHash): static
 
 /**
 * Get customer - Customer
-* @return Customer|\OpenDxp\Model\Element\AbstractElement|\OpenDxp\Model\Element\ElementInterface|null
+* @return \OpenDxp\Model\DataObject\Customer|null
 */
-public function getCustomer(): Customer|\OpenDxp\Model\Element\ElementInterface|\OpenDxp\Model\Element\AbstractElement|null
+public function getCustomer(): ?\OpenDxp\Model\Element\AbstractElement
 {
 	if ($this instanceof PreGetValueHookInterface && !\OpenDxp::inAdmin()) {
 		$preValue = $this->preGetValue("customer");
@@ -857,6 +917,8 @@ public function getCustomerFirstname(): ?string
 */
 public function setCustomerFirstname(?string $customerFirstname): static
 {
+	$this->markFieldDirty("customerFirstname", true);
+
 	$this->customerFirstname = $customerFirstname;
 
 	return $this;
@@ -891,6 +953,8 @@ public function getCustomerLastname(): ?string
 */
 public function setCustomerLastname(?string $customerLastname): static
 {
+	$this->markFieldDirty("customerLastname", true);
+
 	$this->customerLastname = $customerLastname;
 
 	return $this;
@@ -925,6 +989,8 @@ public function getCustomerCompany(): ?string
 */
 public function setCustomerCompany(?string $customerCompany): static
 {
+	$this->markFieldDirty("customerCompany", true);
+
 	$this->customerCompany = $customerCompany;
 
 	return $this;
@@ -959,6 +1025,8 @@ public function getCustomerStreet(): ?string
 */
 public function setCustomerStreet(?string $customerStreet): static
 {
+	$this->markFieldDirty("customerStreet", true);
+
 	$this->customerStreet = $customerStreet;
 
 	return $this;
@@ -993,6 +1061,8 @@ public function getCustomerZip(): ?string
 */
 public function setCustomerZip(?string $customerZip): static
 {
+	$this->markFieldDirty("customerZip", true);
+
 	$this->customerZip = $customerZip;
 
 	return $this;
@@ -1027,6 +1097,8 @@ public function getCustomerCity(): ?string
 */
 public function setCustomerCity(?string $customerCity): static
 {
+	$this->markFieldDirty("customerCity", true);
+
 	$this->customerCity = $customerCity;
 
 	return $this;
@@ -1061,6 +1133,8 @@ public function getCustomerCountry(): ?string
 */
 public function setCustomerCountry(?string $customerCountry): static
 {
+	$this->markFieldDirty("customerCountry", true);
+
 	$this->customerCountry = $customerCountry;
 
 	return $this;
@@ -1095,6 +1169,8 @@ public function getCustomerEmail(): ?string
 */
 public function setCustomerEmail(?string $customerEmail): static
 {
+	$this->markFieldDirty("customerEmail", true);
+
 	$this->customerEmail = $customerEmail;
 
 	return $this;
@@ -1129,6 +1205,8 @@ public function getDeliveryFirstname(): ?string
 */
 public function setDeliveryFirstname(?string $deliveryFirstname): static
 {
+	$this->markFieldDirty("deliveryFirstname", true);
+
 	$this->deliveryFirstname = $deliveryFirstname;
 
 	return $this;
@@ -1163,6 +1241,8 @@ public function getDeliveryLastname(): ?string
 */
 public function setDeliveryLastname(?string $deliveryLastname): static
 {
+	$this->markFieldDirty("deliveryLastname", true);
+
 	$this->deliveryLastname = $deliveryLastname;
 
 	return $this;
@@ -1197,6 +1277,8 @@ public function getDeliveryCompany(): ?string
 */
 public function setDeliveryCompany(?string $deliveryCompany): static
 {
+	$this->markFieldDirty("deliveryCompany", true);
+
 	$this->deliveryCompany = $deliveryCompany;
 
 	return $this;
@@ -1231,6 +1313,8 @@ public function getDeliveryStreet(): ?string
 */
 public function setDeliveryStreet(?string $deliveryStreet): static
 {
+	$this->markFieldDirty("deliveryStreet", true);
+
 	$this->deliveryStreet = $deliveryStreet;
 
 	return $this;
@@ -1265,6 +1349,8 @@ public function getDeliveryZip(): ?string
 */
 public function setDeliveryZip(?string $deliveryZip): static
 {
+	$this->markFieldDirty("deliveryZip", true);
+
 	$this->deliveryZip = $deliveryZip;
 
 	return $this;
@@ -1299,6 +1385,8 @@ public function getDeliveryCity(): ?string
 */
 public function setDeliveryCity(?string $deliveryCity): static
 {
+	$this->markFieldDirty("deliveryCity", true);
+
 	$this->deliveryCity = $deliveryCity;
 
 	return $this;
@@ -1333,12 +1421,17 @@ public function getDeliveryCountry(): ?string
 */
 public function setDeliveryCountry(?string $deliveryCountry): static
 {
+	$this->markFieldDirty("deliveryCountry", true);
+
 	$this->deliveryCountry = $deliveryCountry;
 
 	return $this;
 }
 
-    public function getPaymentProvider(): ?\OpenDxp\Model\DataObject\Objectbrick
+/**
+* @return \OpenDxp\Model\DataObject\OnlineShopOrder\PaymentProvider
+*/
+public function getPaymentProvider(): ?\OpenDxp\Model\DataObject\Objectbrick
 {
 	$data = $this->paymentProvider;
 	if (!$data) {
@@ -1372,7 +1465,10 @@ public function setPaymentProvider(?\OpenDxp\Model\DataObject\Objectbrick $payme
 	return $this;
 }
 
-    public function getPaymentInfo(): ?Fieldcollection
+/**
+* @return \OpenDxp\Model\DataObject\Fieldcollection|null
+*/
+public function getPaymentInfo(): ?\OpenDxp\Model\DataObject\Fieldcollection
 {
 	if ($this instanceof PreGetValueHookInterface && !\OpenDxp::inAdmin()) {
 		$preValue = $this->preGetValue("paymentInfo");
@@ -1427,12 +1523,17 @@ public function getPaymentReference(): ?string
 */
 public function setPaymentReference(?string $paymentReference): static
 {
+	$this->markFieldDirty("paymentReference", true);
+
 	$this->paymentReference = $paymentReference;
 
 	return $this;
 }
 
-    public function getCustomized(): ?\OpenDxp\Model\DataObject\Objectbrick
+/**
+* @return \OpenDxp\Model\DataObject\OnlineShopOrder\Customized
+*/
+public function getCustomized(): ?\OpenDxp\Model\DataObject\Objectbrick
 {
 	$data = $this->customized;
 	if (!$data) {
