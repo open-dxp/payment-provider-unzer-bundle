@@ -16,13 +16,24 @@ declare(strict_types=1);
 
 namespace OpenDxp\Bundle\EcommerceFrameworkBundle;
 
+use OpenDxp\Bundle\EcommerceFrameworkBundle\DependencyInjection\OpenDxpPaymentProviderUnzerExtension;
 use OpenDxp\Bundle\EcommerceFrameworkBundle\Unzer\Installer;
 use OpenDxp\Extension\Bundle\AbstractOpenDxpBundle;
 use OpenDxp\Extension\Bundle\Traits\PackageVersionTrait;
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 
 class OpenDxpPaymentProviderUnzerBundle extends AbstractOpenDxpBundle
 {
     use PackageVersionTrait;
+
+    public function getContainerExtension(): ?ExtensionInterface
+    {
+        if ($this->extension === null) {
+            $this->extension = new OpenDxpPaymentProviderUnzerExtension();
+        }
+
+        return $this->extension;
+    }
 
     /**
      * {@inheritdoc}
