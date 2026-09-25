@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+    name: payment-provider-unzer-bundle
+    description: Unzer payment integration for OpenDXP Ecommerce Framework
+spec:
+    type: library
+    lifecycle: production
+    owner: team-opendxp
+    system: opendxp
