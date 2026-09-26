@@ -12,6 +12,7 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
+    "php": "~8.3.0 || ~8.4.0 || ~8.5.0",
     "unzerdev/php-sdk": "^3.0 || ^1.2.0",
     "open-dxp/opendxp": "^1.0",
     "open-dxp/ecommerce-framework-bundle": "^1.0"
