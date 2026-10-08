@@ -10,8 +10,6 @@
       "symfony/runtime": true
     }
   },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
   "require": {
     "php": "~8.3.0 || ~8.4.0",
     "unzerdev/php-sdk": "^3.0 || ^1.2.0",
