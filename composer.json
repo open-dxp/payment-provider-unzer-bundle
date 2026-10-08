@@ -6,17 +6,20 @@
   "config": {
     "sort-packages": true,
     "allow-plugins": {
+      "pestphp/pest-plugin": true,
       "symfony/runtime": true
     }
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
+    "php": "~8.3.0 || ~8.4.0",
     "unzerdev/php-sdk": "^3.0 || ^1.2.0",
-    "open-dxp/opendxp": "^1.0",
+    "open-dxp/opendxp": "^1.5",
     "open-dxp/ecommerce-framework-bundle": "^1.0"
   },
   "require-dev": {
+    "open-dxp/test-foundation": "^1.0",
     "phpstan/phpstan": "^2.0",
     "phpstan/phpstan-symfony": "^2.0",
     "symfony/dotenv": "^7.4",
@@ -29,11 +32,8 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "OpenDxp\\Model\\DataObject\\": "var/classes/DataObject"
-    },
-    "files": [
-      "kernel/Kernel.php"
-    ]
+      "OpenDxp\\Bundle\\EcommerceFrameworkBundle\\Tests\\": "tests/"
+    }
   },
   "extra": {
     "opendxp": {
